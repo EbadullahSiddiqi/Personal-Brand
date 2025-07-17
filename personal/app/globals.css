@@ -1,4 +1,9 @@
 @import "tailwindcss";
+
+body {
+  @apply bg-[#1c1b1b] text-[#ffeca0];
+}
+
 /* 
 Background: #1c1b1b
 Accent: #ffeca0 */
