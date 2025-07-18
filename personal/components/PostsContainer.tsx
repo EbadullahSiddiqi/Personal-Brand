@@ -16,7 +16,7 @@ function PostsContainer() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [posts]);
 
   return (
     <div>
