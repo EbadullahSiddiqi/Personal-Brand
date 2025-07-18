@@ -4,7 +4,9 @@ import { posts } from "../../../db/schema";
 
 export async function GET() {
   const allPosts = await db.select().from(posts);
-  return NextResponse.json(allPosts);
+  return NextResponse.json({
+    posts: allPosts
+  });
 }
 
 export async function POST(req: Request) {
