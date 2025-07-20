@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ThumbsUp, MessageCircle } from "lucide-react";
 
 interface PostBoxProps {
@@ -13,9 +13,14 @@ interface PostBoxProps {
 function PostBox({ title, content, likes, postId }: PostBoxProps) {
   const [likesCount, setLikesCount] = useState(likes || 0);
 
+  function increaseLike() {
+    setLikesCount((prevLikes) => prevLikes + 1);
+    localStorage.setItem("likedState", true.toString());
+  }
+
   async function updateLikes() {
     if (postId) {
-      setLikesCount((prevLikes) => prevLikes + 1);
+      increaseLike();
       try {
         const response = await fetch("/api/posts/update-likes", {
           method: "POST",
@@ -41,7 +46,11 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
           <div className="flex items-center gap-1">
             <ThumbsUp
               onClick={updateLikes}
-              className="hover:text-amber-600 transition-all duration-100 cursor-pointer"
+              className={`hover:text-amber-600 transition-all duration-100 cursor-pointer ${
+                localStorage.getItem("likedState") === "true"
+                  ? "text-amber-600"
+                  : ""
+              }`}
             />
             {likesCount}
           </div>
