@@ -5,7 +5,14 @@ import PostBox from "./PostBox";
 import { BounceLoader } from "react-spinners";
 
 function PostsContainer() {
-  const [posts, setPosts] = useState<{ title: string; content: string }[]>([]);
+  const [posts, setPosts] = useState<
+    {
+      title: string;
+      content: string;
+      likes: number;
+      id: number;
+    }[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   async function fetchPosts() {
@@ -20,7 +27,7 @@ function PostsContainer() {
     fetchPosts().then(() => {
       setLoading(false);
     });
-  }, [posts]);
+  }, []);
 
   return (
     <div className="flex flex-col gap-6 p-5">
@@ -32,7 +39,13 @@ function PostsContainer() {
 
       {!loading &&
         posts.map((post, idx) => (
-          <PostBox key={idx} title={post.title} content={post.content} />
+          <PostBox
+            key={idx}
+            title={post.title}
+            content={post.content}
+            likes={post.likes}
+            postId={post.id}
+          />
         ))}
     </div>
   );
