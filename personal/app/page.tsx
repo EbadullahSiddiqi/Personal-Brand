@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import PostsContainer from "@/components/PostsContainer";
+import { DotLoader } from "react-spinners";
 
 export default function Home() {
   return (
