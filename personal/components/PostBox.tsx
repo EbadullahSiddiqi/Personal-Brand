@@ -100,7 +100,7 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
               }}
               className="border-1 bg-[#ffeca0] cursor-pointer text-[#1c1b1b] px-4 py-2 rounded-lg mt-2 hover:bg-[#1c1b1b] hover:text-[#ffeca0] hover:rounded-2xl hover:border-[#ffeca0] transition-all duration-150"
             >
-              Submit Comment
+              Add Comment
             </button>
           </div>
         )}

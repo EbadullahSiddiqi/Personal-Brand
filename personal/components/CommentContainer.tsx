@@ -28,8 +28,11 @@ function CommentContainer({ postId }: { postId?: number }) {
   }
 
   useEffect(() => {
-    fetchComments();
-  });
+    setTimeout(() => {
+      if (!postId) return;
+      fetchComments();
+    }, 5000);
+  }, []);
 
   return (
     <div>
