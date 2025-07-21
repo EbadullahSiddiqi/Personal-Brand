@@ -7,3 +7,13 @@ export const posts = pgTable("posts", {
   createdAt: timestamp("created_at").defaultNow(),
   likes: integer("likes").default(0),
 });
+
+export const comments = pgTable("comments", {
+  // id: serial("id").primaryKey(),
+  postId: integer("post_id")
+    .notNull()
+    .references(() => posts.id, { onDelete: "cascade" })
+    .primaryKey(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
