@@ -18,6 +18,7 @@ function Navbar() {
                 className="rounded-full border-2 border-[#ffeca0] cursor-pointer"
                 src="/me2.png"
                 alt="my image"
+                priority={true}
                 width={70}
                 height={70}
                 onClick={() => {
