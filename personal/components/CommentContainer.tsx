@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import Comment from "./Comment";
+import BounceLoader from "react-spinners/BounceLoader";
 
 function CommentContainer({ postId }: { postId?: number }) {
   type CommentType = { content: string }; // Add other fields if needed
   const [postComments, setPostComments] = useState<CommentType[]>([]);
+  const [loading, setLoading] = useState(true);
 
   async function fetchComments() {
     if (!postId) return;
@@ -30,19 +32,27 @@ function CommentContainer({ postId }: { postId?: number }) {
   useEffect(() => {
     setTimeout(() => {
       if (!postId) return;
-      fetchComments();
+      fetchComments().then(() => {
+        setLoading(false);
+      });
     }, 5000);
   }, []);
 
   return (
     <div>
-      {postComments.map((comment, idx) => {
-        return (
-          <div key={idx}>
-            <Comment text={comment.content} />
-          </div>
-        );
-      })}
+      {loading && (
+        <div className="p-8 flex items-center justify-center w-full">
+          <BounceLoader color="#ffeca0" size={70} />
+        </div>
+      )}
+      {!loading &&
+        postComments.map((comment, idx) => {
+          return (
+            <div key={idx}>
+              <Comment text={comment.content} />
+            </div>
+          );
+        })}
     </div>
   );
 }
