@@ -37,7 +37,7 @@ function CommentContainer({ postId }: { postId?: number }) {
         setLoading(false);
       });
     }, 5000);
-  }, []);
+  }, [postComments]);
 
   return (
     <div>

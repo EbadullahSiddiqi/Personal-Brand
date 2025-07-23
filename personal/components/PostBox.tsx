@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ThumbsUp, MessageCircle } from "lucide-react";
 import CommentContainer from "./CommentContainer";
+import { BounceLoader } from "react-spinners";
 
 interface PostBoxProps {
   title?: string; // the issue is, I'm using server actions the wrong way. The error is because Drizzle ORM isn't allowed to be used in client components.
@@ -16,6 +17,7 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
   const [commentSectionOpen, setCommentSectionOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function increaseLike() {
     setLikesCount((prevLikes) => prevLikes + 1);
@@ -44,6 +46,7 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
   }
 
   async function addComment(postId: number, comment: string, name: string) {
+    setLoading(true);
     try {
       const response = await fetch("/api/posts/add-comment", {
         method: "POST",
@@ -55,7 +58,8 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
       if (!response.ok) {
         throw new Error("Failed to add comment");
       }
-      // Handle successful comment addition
+      setLoading(false);
+      setCommentSectionOpen(false);
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -109,7 +113,11 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
               }}
               className="border-1 bg-[#ffeca0] cursor-pointer text-[#1c1b1b] px-4 py-2 rounded-lg mt-2 hover:bg-[#1c1b1b] hover:text-[#ffeca0] hover:rounded-2xl hover:border-[#ffeca0] transition-all duration-150"
             >
-              Add Comment
+              {loading ? (
+                <BounceLoader size={30} />
+              ) : (
+                "Add Comment"
+              )}
             </button>
           </div>
         )}
