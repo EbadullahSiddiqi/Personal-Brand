@@ -15,6 +15,7 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
   const [likesCount, setLikesCount] = useState(likes || 0);
   const [commentSectionOpen, setCommentSectionOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [name, setName] = useState("");
 
   function increaseLike() {
     setLikesCount((prevLikes) => prevLikes + 1);
@@ -42,14 +43,14 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
     }
   }
 
-  async function addComment(postId: number, comment: string) {
+  async function addComment(postId: number, comment: string, name: string) {
     try {
       const response = await fetch("/api/posts/add-comment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ postId, comment }),
+        body: JSON.stringify({ postId, comment, name }),
       });
       if (!response.ok) {
         throw new Error("Failed to add comment");
@@ -85,8 +86,16 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
         </div>
         {commentSectionOpen && (
           <div className="self-start p-5 w-full">
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Your name"
+              className="border-2 border-[#ffeca0] text-white w-1/5 rounded-xl px-2 py-2 mb-2"
+            />
             <textarea
               value={comment}
+              placeholder="Add a comment..."
               onChange={(e) => {
                 setComment(e.target.value);
               }}
@@ -95,7 +104,7 @@ function PostBox({ title, content, likes, postId }: PostBoxProps) {
             <button
               onClick={() => {
                 if (postId) {
-                  addComment(postId, comment);
+                  addComment(postId, comment, name);
                 }
               }}
               className="border-1 bg-[#ffeca0] cursor-pointer text-[#1c1b1b] px-4 py-2 rounded-lg mt-2 hover:bg-[#1c1b1b] hover:text-[#ffeca0] hover:rounded-2xl hover:border-[#ffeca0] transition-all duration-150"

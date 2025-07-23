@@ -5,7 +5,7 @@ import Comment from "./Comment";
 import BounceLoader from "react-spinners/BounceLoader";
 
 function CommentContainer({ postId }: { postId?: number }) {
-  type CommentType = { content: string }; // Add other fields if needed
+  type CommentType = { content: string; name: string }; // Add other fields if needed
   const [postComments, setPostComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +22,7 @@ function CommentContainer({ postId }: { postId?: number }) {
 
       const { comments } = await response.json(); // destructuring comments from the response
       setPostComments(comments);
+      console.log(comments[0]);
 
       //   console.log(comments[0].content);
     } catch (error) {
@@ -49,7 +50,7 @@ function CommentContainer({ postId }: { postId?: number }) {
         postComments.map((comment, idx) => {
           return (
             <div key={idx}>
-              <Comment text={comment.content} />
+              <Comment text={comment.content} name={comment.name} />
             </div>
           );
         })}

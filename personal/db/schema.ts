@@ -15,5 +15,6 @@ export const comments = pgTable("comments", {
     .references(() => posts.id, { onDelete: "cascade" })
     .primaryKey(),
   content: text("content").notNull(),
+  name: text("name").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });

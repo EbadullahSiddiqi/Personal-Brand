@@ -3,7 +3,7 @@ import { comments } from "@/db/schema";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { postId, comment } = await request.json();
+  const { postId, comment, name } = await request.json();
 
   if (!postId || !comment) {
     return new Response("Invalid input", { status: 400 });
@@ -14,6 +14,7 @@ export async function POST(request: Request) {
     await db.insert(comments).values({
       postId: postId,
       content: comment,
+      name: name || "Anonymous", // Default to "Anonymous" if no name is provided
     });
 
     return NextResponse.json({

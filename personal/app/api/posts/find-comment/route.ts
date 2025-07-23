@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   const { postId } = await request.json();
   try {
     const postComments = await db
-      .select({ content: comments.content })
+      .select({ content: comments.content, name: comments.name })
       .from(comments)
       .where(eq(comments.postId, postId));
     return NextResponse.json(
