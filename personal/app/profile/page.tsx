@@ -117,6 +117,15 @@ export default function ProfilePage() {
     fetchPosts();
   }, []);
 
+  const downloadResume = () => {
+    const link = document.createElement("a");
+    link.href = "/resume.pdf";
+    link.download = "resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="min-h-screen bg-[#1c1b1b]">
       <div className="max-w-6xl mx-auto py-8 px-4 lg:px-8">
@@ -160,15 +169,12 @@ export default function ProfilePage() {
                   <button className="bg-[#ffeca0] text-[#1c1b1b] px-6 py-3 rounded-xl font-semibold hover:bg-[#f5d97a] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                     Get In Touch
                   </button>
-                  <a
-                    href="/resume.pdf"
-                    // target="_blank"
-                    // rel="noopener noreferrer"
+                  <button
+                    onClick={downloadResume}
+                    className="bg-[#2a2a2a]/80 backdrop-blur-sm cursor-pointer text-[#ffeca0] px-6 py-3 rounded-xl font-semibold hover:bg-[#333]/80 transition-all duration-200 border border-[#ffeca0]/30"
                   >
-                    <button className="bg-[#2a2a2a]/80 backdrop-blur-sm text-[#ffeca0] px-6 py-3 rounded-xl font-semibold hover:bg-[#333]/80 transition-all duration-200 border border-[#ffeca0]/30">
-                      Download Resume
-                    </button>
-                  </a>
+                    Download Resume
+                  </button>
                 </div>
               </div>
             </div>
