@@ -62,27 +62,6 @@ const projects = [
   },
 ];
 
-const posts = [
-  {
-    title: "I built my own LinkedIn 😎",
-    snippet:
-      "Spent 4 days building this project from scratch. Here's how it went...",
-    readTime: "3 min read",
-    date: "2 days ago",
-    likes: 24,
-    comments: 8,
-  },
-  {
-    title: "Why I'm obsessed with Drizzle ORM",
-    snippet:
-      "I've used Prisma before... but Drizzle just feels cleaner and faster.",
-    readTime: "5 min read",
-    date: "1 week ago",
-    likes: 42,
-    comments: 15,
-  },
-];
-
 const stats = [
   { label: "Projects", value: "12+" },
   { label: "Years Exp", value: "2+" },
@@ -99,7 +78,6 @@ type PostType = {
 
 export default function ProfilePage() {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [loading, setLoading] = useState(true);
 
   async function fetchPosts() {
     try {
@@ -109,7 +87,6 @@ export default function ProfilePage() {
     } catch (error) {
       console.error("Failed to fetch posts:", error);
     } finally {
-      setLoading(false);
     }
   }
 

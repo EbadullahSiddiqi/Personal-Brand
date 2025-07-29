@@ -1,12 +1,6 @@
-"use client";
-
-import React, { useEffect } from "react";
+import React from "react";
 
 function Comment({ text, name }: { text: string; name?: string }) {
-  useEffect(() => {
-    console.log(name);
-  });
-
   return (
     <div className="flex items-start gap-3 p-4 bg-[#1c1b1b] rounded-xl border border-[#2a2a2a] my-3 max-w-full sm:max-w-xl md:max-w-2xl">
       {/* Avatar */}
