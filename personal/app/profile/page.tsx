@@ -1,24 +1,56 @@
 // app/profile/page.tsx
+"use client";
 
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
 const skills = [
+  "React.js",
+  "Node.js",
+  "Express.js",
+  "MongoDB",
+  "Bootstrap",
   "Next.js",
   "TypeScript",
   "TailwindCSS",
   "Drizzle ORM",
+  "Prisma",
   "NeonDB",
+  "Superbase",
 ];
 
 const projects = [
   {
-    title: "Personal LinkedIn App",
+    title: "Personal LinkedIn / Social Media App",
     description:
-      "A custom-built LinkedIn clone with posts, likes, and comments.",
-    tech: ["Next.js", "TypeScript", "Drizzle ORM"],
+      "A custom-built LinkedIn for REAL personal branding with posts, likes, and comments.",
+    tech: ["Next.js", "TypeScript", "Drizzle ORM", "NeonDB"],
     status: "Live",
     link: "#",
+  },
+  {
+    title: "Content Co-Pilot",
+    description:
+      "AI-powered content generation tool for YouTube Scripts, Instagram Reels, and LinkedIn Posts.",
+    tech: [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "Gemini AI",
+      "Clerk Auth",
+      "Google Cloud Services",
+    ],
+    status: "Live",
+    link: "https://contentcopilot.vercel.app/",
+  },
+  {
+    title: "Prepit AI",
+    description:
+      "Study prepapration app that generates quizzes and flashcards from students' notes.",
+    tech: ["Next.js", "TypeScript", "Gemini AI"],
+    status: "Live",
+    link: "https://prepit-ai.vercel.app/",
   },
   {
     title: "Kenjen Agency Website",
@@ -26,7 +58,7 @@ const projects = [
       "Portfolio website for our agency showcasing client work and services.",
     tech: ["React", "TailwindCSS", "Framer Motion"],
     status: "Live",
-    link: "#",
+    link: "https://kenjen.tech/",
   },
 ];
 
@@ -53,11 +85,38 @@ const posts = [
 
 const stats = [
   { label: "Projects", value: "12+" },
-  { label: "Clients", value: "25+" },
-  { label: "Years Exp", value: "5+" },
+  { label: "Years Exp", value: "2+" },
 ];
 
+type PostType = {
+  id: number;
+  title: string;
+  content: string;
+  likes: number;
+  createdAt: string;
+  // add other fields as needed
+};
+
 export default function ProfilePage() {
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function fetchPosts() {
+    try {
+      const res = await fetch("/api/posts");
+      const data = await res.json();
+      setPosts(data.posts);
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#1c1b1b]">
       <div className="max-w-6xl mx-auto py-8 px-4 lg:px-8">
@@ -85,7 +144,7 @@ export default function ProfilePage() {
                   Ebadullah Siddiqi
                 </h1>
                 <p className="text-xl text-[#d6d0a5] mb-4 font-medium">
-                  Full Stack Developer & Founder of Kenjen
+                  Full Stack Developer & Indie Hacker
                 </p>
                 <div className="flex flex-wrap gap-4 mb-6">
                   {stats.map((stat, index) => (
@@ -101,9 +160,15 @@ export default function ProfilePage() {
                   <button className="bg-[#ffeca0] text-[#1c1b1b] px-6 py-3 rounded-xl font-semibold hover:bg-[#f5d97a] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                     Get In Touch
                   </button>
-                  <button className="bg-[#2a2a2a]/80 backdrop-blur-sm text-[#ffeca0] px-6 py-3 rounded-xl font-semibold hover:bg-[#333]/80 transition-all duration-200 border border-[#ffeca0]/30">
-                    Download CV
-                  </button>
+                  <a
+                    href="/resume.pdf"
+                    // target="_blank"
+                    // rel="noopener noreferrer"
+                  >
+                    <button className="bg-[#2a2a2a]/80 backdrop-blur-sm text-[#ffeca0] px-6 py-3 rounded-xl font-semibold hover:bg-[#333]/80 transition-all duration-200 border border-[#ffeca0]/30">
+                      Download Resume
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -132,9 +197,9 @@ export default function ProfilePage() {
                 About Me
               </h2>
               <p className="text-[#d6d0a5] leading-relaxed text-lg">
-                I'm a MERN Stack Developer and Indie Hacker building digital
-                products and helping businesses grow with custom software. I run
-                a software agency called{" "}
+                I'm a MERN Stack & Next.js Developer and Indie Hacker building
+                digital products and helping businesses grow with custom
+                software. I run a software agency called{" "}
                 <span className="text-[#ffeca0] font-semibold">Kenjen</span> and
                 I'm always pushing out cool projects like this LinkedIn clone!
               </p>
@@ -185,7 +250,10 @@ export default function ProfilePage() {
                         </span>
                       ))}
                     </div>
-                    <button className="text-[#ffeca0] hover:text-[#f5d97a] font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                    <Link
+                      href={project.link}
+                      className="text-[#ffeca0] hover:text-[#f5d97a] font-semibold flex items-center gap-2 group-hover:gap-3 transition-all"
+                    >
                       View Project
                       <svg
                         className="w-4 h-4"
@@ -200,7 +268,7 @@ export default function ProfilePage() {
                           d="M13 7l5 5m0 0l-5 5m5-5H6"
                         />
                       </svg>
-                    </button>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -234,14 +302,14 @@ export default function ProfilePage() {
                       {post.title}
                     </h3>
                     <p className="text-[#d6d0a5] mb-4 leading-relaxed">
-                      {post.snippet}
+                      {post.content}
                     </p>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm text-[#999]">
+                      {/* <div className="flex items-center gap-4 text-sm text-[#999]">
                         <span>{post.date}</span>
                         <span>•</span>
                         <span>{post.readTime}</span>
-                      </div>
+                      </div> */}
                       <div className="flex items-center gap-4 text-sm text-[#999]">
                         <div className="flex items-center gap-1 hover:text-[#ffeca0] transition-colors cursor-pointer">
                           <svg
@@ -269,7 +337,7 @@ export default function ProfilePage() {
                               clipRule="evenodd"
                             />
                           </svg>
-                          {post.comments}
+                          {/* {post.comments} */}
                         </div>
                       </div>
                     </div>
@@ -307,25 +375,6 @@ export default function ProfilePage() {
                     <div className="w-2 h-2 bg-[#ffeca0] rounded-full opacity-60 group-hover:opacity-100 transition-opacity"></div>
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Contact Card */}
-            <div className="bg-gradient-to-br from-[#ffeca0]/10 to-[#ffeca0]/5 backdrop-blur-sm rounded-2xl p-8 border border-[#ffeca0]/30">
-              <h3 className="text-xl font-bold text-white mb-4">
-                Let's Connect!
-              </h3>
-              <p className="text-[#d6d0a5] mb-6">
-                Always open to discussing new opportunities and exciting
-                projects.
-              </p>
-              <div className="space-y-3">
-                <button className="w-full bg-[#ffeca0] hover:bg-[#f5d97a] text-[#1c1b1b] py-3 px-4 rounded-xl font-semibold transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg">
-                  Send Message
-                </button>
-                <button className="w-full bg-[#2a2a2a]/70 hover:bg-[#333]/70 text-[#ffeca0] py-3 px-4 rounded-xl font-semibold transition-all duration-200 border border-[#ffeca0]/30 hover:border-[#ffeca0]/50">
-                  Schedule Call
-                </button>
               </div>
             </div>
           </div>
