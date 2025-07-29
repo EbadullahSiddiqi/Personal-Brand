@@ -18,7 +18,6 @@ function PostsContainer() {
   async function fetchPosts() {
     const rawPosts = await fetch("/api/posts");
     const refinedPosts = await rawPosts.json();
-    // Handle the fetched posts as needed
     setPosts(refinedPosts.posts);
     console.log(posts);
   }
@@ -30,14 +29,12 @@ function PostsContainer() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 p-5">
-      {loading && (
+    <div className="flex flex-col gap-6 px-4 sm:px-6 md:px-8 py-10 max-w-5xl mx-auto w-full">
+      {loading ? (
         <div className="p-8 flex items-center justify-center w-full">
           <BounceLoader color="#ffeca0" size={70} />
         </div>
-      )}
-
-      {!loading &&
+      ) : (
         posts.map((post, idx) => (
           <PostBox
             key={idx}
@@ -46,7 +43,8 @@ function PostsContainer() {
             likes={post.likes}
             postId={post.id}
           />
-        ))}
+        ))
+      )}
     </div>
   );
 }

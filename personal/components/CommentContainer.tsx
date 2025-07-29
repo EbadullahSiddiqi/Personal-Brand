@@ -5,7 +5,7 @@ import Comment from "./Comment";
 import BounceLoader from "react-spinners/BounceLoader";
 
 function CommentContainer({ postId }: { postId?: number }) {
-  type CommentType = { content: string; name: string }; // Add other fields if needed
+  type CommentType = { content: string; name: string };
   const [postComments, setPostComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,11 +20,9 @@ function CommentContainer({ postId }: { postId?: number }) {
         body: JSON.stringify({ postId }),
       });
 
-      const { comments } = await response.json(); // destructuring comments from the response
+      const { comments } = await response.json();
       setPostComments(comments);
       console.log(comments[0]);
-
-      //   console.log(comments[0].content);
     } catch (error) {
       throw new Error("Frontend: Failed to fetch comments");
     }
@@ -37,23 +35,21 @@ function CommentContainer({ postId }: { postId?: number }) {
         setLoading(false);
       });
     }, 5000);
-  }, [postComments]);
+  }, [postId]); // ✅ Corrected dependency array to avoid infinite re-renders
 
   return (
-    <div>
-      {loading && (
+    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">
+      {loading ? (
         <div className="p-8 flex items-center justify-center w-full">
           <BounceLoader color="#ffeca0" size={70} />
         </div>
+      ) : (
+        postComments.map((comment, idx) => (
+          <div key={idx}>
+            <Comment text={comment.content} name={comment.name} />
+          </div>
+        ))
       )}
-      {!loading &&
-        postComments.map((comment, idx) => {
-          return (
-            <div key={idx}>
-              <Comment text={comment.content} name={comment.name} />
-            </div>
-          );
-        })}
     </div>
   );
 }
