@@ -166,9 +166,15 @@ export default function ProfilePage() {
                   ))}
                 </div>
                 <div className="flex gap-3">
-                  <button className="bg-[#ffeca0] text-[#1c1b1b] px-6 py-3 rounded-xl font-semibold hover:bg-[#f5d97a] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                    Get In Touch
-                  </button>
+                  <a
+                    href="mailto:dev.ebadullah@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <button className="bg-[#ffeca0] text-[#1c1b1b] cursor-pointer px-6 py-3 rounded-xl font-semibold hover:bg-[#f5d97a] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                      Get In Touch
+                    </button>
+                  </a>
                   <button
                     onClick={downloadResume}
                     className="bg-[#2a2a2a]/80 backdrop-blur-sm cursor-pointer text-[#ffeca0] px-6 py-3 rounded-xl font-semibold hover:bg-[#333]/80 transition-all duration-200 border border-[#ffeca0]/30"
