@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Comment from "./Comment";
 import BounceLoader from "react-spinners/BounceLoader";
 
@@ -9,7 +9,7 @@ function CommentContainer({ postId }: { postId?: number }) {
   const [postComments, setPostComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(true);
 
-  async function fetchComments() {
+  const fetchComments = useCallback(async () => {
     if (!postId) return;
     try {
       const response = await fetch("/api/posts/find-comment", {
@@ -22,11 +22,10 @@ function CommentContainer({ postId }: { postId?: number }) {
 
       const { comments } = await response.json();
       setPostComments(comments);
-      console.log(comments[0]);
     } catch (error) {
-      throw new Error("Frontend: Failed to fetch comments");
+      throw new Error("Frontend: Failed to fetch comments" + error);
     }
-  }
+  }, [postId]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -35,7 +34,7 @@ function CommentContainer({ postId }: { postId?: number }) {
         setLoading(false);
       });
     }, 5000);
-  }, [postId]); // ✅ Corrected dependency array to avoid infinite re-renders
+  }, [fetchComments]); // ✅ Corrected dependency array to avoid infinite re-renders
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">

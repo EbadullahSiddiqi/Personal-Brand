@@ -186,11 +186,11 @@ export default function ProfilePage() {
                 About Me
               </h2>
               <p className="text-[#d6d0a5] leading-relaxed text-lg">
-                I'm a MERN Stack & Next.js Developer and Indie Hacker building
+                I&apos;m a MERN Stack & Next.js Developer and Indie Hacker building
                 digital products and helping businesses grow with custom
                 software. I run a software agency called{" "}
                 <span className="text-[#ffeca0] font-semibold">Kenjen</span> and
-                I'm always pushing out cool projects like this LinkedIn clone!
+                I&apos;m always pushing out cool projects like this LinkedIn clone!
               </p>
             </div>
 

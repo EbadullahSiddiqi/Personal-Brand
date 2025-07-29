@@ -1,24 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import CreateForm from "@/components/CreateForm";
+
+type Post = {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string | Date;
+};
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [enteredCode, setEnteredCode] = useState("");
-  const [allPosts, setAllPosts] = useState<any[]>([]);
+  const [allPosts, setAllPosts] = useState<Post[]>([]);
   const [error, setError] = useState("");
 
   const ADMIN_CODE = process.env.NEXT_PUBLIC_ADMIN_CODE;
 
   // Check localStorage for existing access
 
-  async function fetchPosts() {
+  const fetchPosts = useCallback(async () => {
     const rawPosts = await fetch("/api/posts");
     const refinedPosts = await rawPosts.json();
     setAllPosts(refinedPosts.posts);
-    console.log(allPosts);
-  }
+    console.log(refinedPosts.posts);
+  }, []);
 
   useEffect(() => {
     const savedCode = localStorage.getItem("admin-code");
@@ -26,7 +33,7 @@ export default function AdminPage() {
       setAuthenticated(true);
       fetchPosts();
     }
-  }, []);
+  }, [ADMIN_CODE, fetchPosts]);
 
   const handleSubmit = () => {
     if (enteredCode === ADMIN_CODE) {
